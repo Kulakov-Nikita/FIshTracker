@@ -16,9 +16,19 @@ def read_video(path_to_input_video: str, video_resolution: tuple = (1280, 720), 
         if ret:
             frames[counter] = frame
             counter += 1
-            if counter % (video_duration_frames // 100) == 0:
-                print(f"{counter // (video_duration_frames // 100)}%")
+            # if counter % (video_duration_frames // 100) == 0:
+            #     print(f"{counter // (video_duration_frames // 100)}%")
         else:
             cap.release()
 
     return frames
+
+
+def write_video(frames: np.ndarray, path_to_output_video: str, fps: int = 30) -> None:
+    fourcc = cv2.VideoWriter_fourcc(*"MJPG")
+    out = cv2.VideoWriter(path_to_output_video, fourcc, fps, (frames.shape[2], frames.shape[1]))
+    print(frames.shape, frames.dtype)
+    for frame in frames:
+        out.write(frame)
+    out.release()
+
