@@ -1,4 +1,5 @@
 from video_processing import *
+from contours import *
 import torch
 from matplotlib import pyplot as plt
 
@@ -25,7 +26,10 @@ def main():
     # Преобразуем tensor в numpy
     result = result.permute(0, 2, 3, 1)
     result = result.numpy()
-    result = np.stack((result,)*3, axis=3).reshape(result.shape[0], result.shape[1], result.shape[2], 3)
+    #result = np.stack((result,)*3, axis=3).reshape(result.shape[0], result.shape[1], result.shape[2], 3)
+
+    # Обводим область с рыбкой
+    result = draw_contours(background_frames=video_np, mask_frames=result)
 
     # Запись результата на диск
     write_video(frames=result, path_to_output_video='output/fenibut_2.avi')
