@@ -10,9 +10,9 @@ def draw_contours(background_frames: np.ndarray, mask_frames: np.ndarray, min_co
                           cv2.contourArea(cnt) > min_contour_area]
 
         if len(large_contours) > 0:
-            for cnt in large_contours:
-                x, y, w, h = cv2.boundingRect(cnt)
-                background = cv2.rectangle(background, (x, y), (x + w, y + h), (0, 0, 200), 3)
+            #for cnt in large_contours:
+                #x, y, w, h = cv2.boundingRect(cnt)
+                #background = cv2.rectangle(background, (x, y), (x + w, y + h), (0, 0, 200), 3)
 
             frame_out = cv2.drawContours(background, large_contours, -1, (0, 255, 0), thickness=2)
 
