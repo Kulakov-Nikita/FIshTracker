@@ -19,10 +19,10 @@ class IntersectionDetector:
         self.threshold: float = threshold
 
     def intersection(self, frames) -> None:
-        in_center_fish_area = self.center_sector.intersection(frames)
-        in_middle_fish_area = self.middle_sector.intersection(frames)
-        in_outer_fish_area = self.outer_sector.intersection(frames)
-        on_periphery_fish_area = self.periphery.intersection(frames)
+        in_center_fish_area = self.center_sector.intersection_area(frames)
+        in_middle_fish_area = self.middle_sector.intersection_area(frames)
+        in_outer_fish_area = self.outer_sector.intersection_area(frames)
+        on_periphery_fish_area = self.periphery.intersection_area(frames)
 
         self.periphery_sector_frame_num += torch.sum((on_periphery_fish_area - in_outer_fish_area > self.threshold))
         self.outer_sector_frame_num += torch.sum((in_outer_fish_area - in_middle_fish_area > self.threshold))
@@ -50,6 +50,9 @@ class Sector:
         self.mask = (distance <= radius).float().to('cuda')
 
     def intersection(self, frames):
-        intersection = self.mask * frames
+        return self.mask * frames
+
+    def intersection_area(self, frames):
+        intersection = self.intersection(frames)
         return torch.sum(intersection, dim=(2, 3), keepdim=True).reshape(len(frames))
 
